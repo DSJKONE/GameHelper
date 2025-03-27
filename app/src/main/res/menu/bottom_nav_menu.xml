@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/gameFragment"
+        android:title="@string/nav_bottom_game"
+        android:icon="@drawable/nav_bottom_game" />
+    <item
+        android:id="@+id/chatFragment"
+        android:title="@string/nav_bottom_chat"
+        android:icon="@drawable/nav_bottom_chat" />
+    <item
+        android:id="@+id/tradeFragment"
+        android:title="@string/nav_bottom_trade"
+        android:icon="@drawable/nav_bottom_trade" />
+    <item
+        android:id="@+id/profileFragment"
+        android:title="@string/nav_bottom_mine"
+        android:icon="@drawable/nav_bottom_mine" />
+
+</menu>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Game</string>
+<!--    底部导航栏-->
+    <string name="nav_bottom_game">游戏</string>
+    <string name="nav_bottom_chat">群聊</string>
+    <string name="nav_bottom_trade">交易</string>
+    <string name="nav_bottom_mine">我的</string>
+</resources>
