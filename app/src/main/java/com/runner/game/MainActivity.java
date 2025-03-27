@@ -1,19 +1,17 @@
 package com.runner.game;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.runner.game.databinding.ActivityMainBinding;
 import com.runner.game.ui.BaseActivity;
-import com.runner.game.ui.fragment.BookingSubFragment;
 import com.runner.game.ui.fragment.ChatFragment;
 import com.runner.game.ui.fragment.GameFragment;
-import com.runner.game.ui.fragment.HomeSubFragment;
-import com.runner.game.ui.fragment.NewGameSubFragment;
 import com.runner.game.ui.fragment.ProfileFragment;
-import com.runner.game.ui.fragment.RankingSubFragment;
 import com.runner.game.ui.fragment.TradeFragment;
 
 import java.util.ArrayList;
@@ -22,15 +20,19 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
-    private List<Fragment> gameFragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
         setContentView(binding.getRoot());
 
-        initGameFragmentList();
         setupBottomNavigation();
         loadInitialFragment();
     }
@@ -39,7 +41,7 @@ public class MainActivity extends BaseActivity {
         binding.bottomNav.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.gameFragment) {
-                replaceFragment(new GameFragment(gameFragmentList));
+                replaceFragment(new GameFragment());
             } else if (itemId == R.id.chatFragment) {
                 replaceFragment(new ChatFragment());
             } else if (itemId == R.id.tradeFragment) {
@@ -52,7 +54,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadInitialFragment() {
-        replaceFragment(new GameFragment(gameFragmentList));
+        replaceFragment(new GameFragment());
 
     }
 
@@ -60,10 +62,11 @@ public class MainActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
-    private void initGameFragmentList() {
-        gameFragmentList.add(new HomeSubFragment());
-        gameFragmentList.add(new NewGameSubFragment());
-        gameFragmentList.add(new BookingSubFragment());
-        gameFragmentList.add(new RankingSubFragment());
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (binding != null) {
+            binding = null;
+        }
     }
 }

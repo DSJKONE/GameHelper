@@ -20,6 +20,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.runner.game.R;
 import com.runner.game.databinding.FragmentGameBinding;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameFragment extends Fragment {
@@ -27,17 +30,22 @@ public class GameFragment extends Fragment {
     private Context mContext;
     private FragmentGameBinding binding;
     private static final String []tabTitles = {"首页", "新游", "预约", "排行"};
-    private static List<Fragment> fragmentList;
+    private List<Fragment> fragmentList = new ArrayList<>();
+    private TabLayout.OnTabSelectedListener tabSelectedListener;
 
-
-    public GameFragment(List<Fragment> fragmentList) {
-        this.fragmentList = fragmentList;
+    public GameFragment() {
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
     }
 
     @Nullable
@@ -50,52 +58,69 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initGameFragmentList();
         setupViewPagerWithTabs();
     }
 
     private void setupViewPagerWithTabs() {
-        GamePagerAdapter adapter = new GamePagerAdapter(this);
+        GamePagerAdapter adapter = new GamePagerAdapter(this, fragmentList);
         binding.viewpager.setAdapter(adapter);
 
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        new TabLayoutMediator(binding.tabLayout, binding.viewpager, (tab, position) -> {
+            tab.setText(tabTitles[position]);
+        }).attach();
+
+        for (int i = 0; i < binding.tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = binding.tabLayout.getTabAt(i);
+            if (tab != null) {
+                if (tab.getCustomView() == null || !(tab.getCustomView() instanceof TextView)) {
+                    TextView textView = new TextView(mContext);
+                    textView.setText(tabTitles[i]);
+                    textView.setTextAppearance(tab.isSelected() ? R.style.TabLayoutTextSelected : R.style.TabLayoutTextUnSelected);
+                    tab.setCustomView(textView);
+                }
+            }
+        }
+
+        tabSelectedListener = new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                updateTabStyle(tab,R.style.TabLayoutTextSelected);
-
+               updateTabStyle(tab);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                updateTabStyle(tab,R.style.TabLayoutTextUnSelected);
+               updateTabStyle(tab);
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        };
 
-        new TabLayoutMediator(binding.tabLayout, binding.viewpager, (tab, position) -> {
-            tab.setText(tabTitles[position]);
-        }).attach();
-
-
-
+        binding.tabLayout.addOnTabSelectedListener(tabSelectedListener);
     }
 
-    private void updateTabStyle(TabLayout.Tab tab, @StyleRes int styleRes) {
-        if (tab.getCustomView() == null) {
-            tab.setCustomView(R.layout.tab_item);
-        }
-        TextView textView = (TextView) tab.getCustomView().findViewById(R.id.tab_text);
-        if (textView != null) {
-            textView.setTextAppearance(mContext,styleRes);
-        }
+    private void updateTabStyle(TabLayout.Tab tab) {
+        TextView textView = (TextView) tab.getCustomView();
+        textView.setTextAppearance(tab.isSelected() ? R.style.TabLayoutTextSelected : R.style.TabLayoutTextUnSelected);
+    }
+
+
+    private void initGameFragmentList() {
+        fragmentList.add(new HomeSubFragment());
+        fragmentList.add(new NewGameSubFragment());
+        fragmentList.add(new BookingSubFragment());
+        fragmentList.add(new RankingSubFragment());
     }
 
     private static class GamePagerAdapter extends FragmentStateAdapter {
-        public GamePagerAdapter(@NonNull Fragment fragment) {
+        List<Fragment> fragmentList;
+
+        public GamePagerAdapter(@NonNull Fragment fragment, List<Fragment> fragmentList) {
             super(fragment);
+            this.fragmentList = fragmentList;
         }
 
         @NonNull
@@ -113,6 +138,9 @@ public class GameFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        if (binding != null) {
+            binding.tabLayout.removeOnTabSelectedListener(tabSelectedListener);
+            binding = null;
+        }
     }
 }

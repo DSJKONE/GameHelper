@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Game" parent="Theme.AppCompat.Light.NoActionBar">
-
+        <!-- 设置状态栏半透明——解除注释 -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <!-- 设置状态栏为绿色 -->
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
     </style>
 
 
-
     <style name="TabLayoutTextSelected">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TabLayoutTextUnSelected">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SearchBoxStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- 边框颜色 -->
+        <item name="boxStrokeColor">@color/search_stroke_color</item>
+        <!-- 提示文字颜色 -->
+        <item name="hintTextColor">@color/search_hint_color</item>
+        <!-- 图标颜色 -->
+        <item name="startIconTint">@color/search_icon_color</item>
     </style>
 
 </resources>
