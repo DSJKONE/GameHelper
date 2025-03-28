@@ -5,7 +5,14 @@
     <string name="nav_bottom_chat">群聊</string>
     <string name="nav_bottom_trade">交易</string>
     <string name="nav_bottom_mine">我的</string>
+    <string name="tag_game_type_recommend">推荐</string>
+    <string name="tag_game_type_free">免费款</string>
+    <string name="tag_game_type_anime">动漫</string>
+    <string name="tag_game_type_three_countries">三国</string>
+    <string name="tag_game_type_box">开宝箱</string>
+    <string name="tag_game_type_2d">二次元</string>
     <string name="search_hint_txt">搜一搜</string>
+    <string name="sign_in_txt">签到</string>
     <string name="geci">
     曾梦想仗剑走天涯，看一看世界的繁华\n
     年少的心总有些轻狂，如今你四海为家\n

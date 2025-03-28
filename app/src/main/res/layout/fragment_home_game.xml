@@ -2,37 +2,34 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-       <include layout="@layout/item_search"
-           app:layout_scrollFlags="scroll|enterAlways">
-       </include>
-
-        <TextView
-            android:text="固定滑动区"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:background="@color/purple_200"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <TextView
+        android:background="@color/white">
+
+        <include
+            layout="@layout/item_search"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/game_tag_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="#fff"
-            android:text="@string/geci"/>
+            app:tabMode="fixed"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingStart="1dp"
+            app:tabPaddingEnd="1dp" />
 
-    </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.appbar.AppBarLayout>
 
+    <FrameLayout
+        android:id="@+id/game_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
